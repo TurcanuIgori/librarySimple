@@ -25,8 +25,7 @@ public class BookDAO {
 	public BookDAO(Connection con) {
 		conn = con;
 	}
-	public boolean checkBook(Book book){
-		
+	public boolean checkBook(Book book){		
 		ResultSet rs = null;
 		try {		
 			PreparedStatement pstmt = conn.prepareStatement(
