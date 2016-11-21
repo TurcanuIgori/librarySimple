@@ -125,7 +125,6 @@ public class UserDAO {
 					"Select * from users where id = ?;");
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
-
 			while (rs.next()) {
 				user.setId(rs.getInt("id"));
 				user.setFirstName(rs.getString("firstname"));

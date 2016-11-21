@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import Model.Author;
 import Model.Book;
+import Model.Genre;
 import Model.User;
 
 public class BookDAO {
@@ -84,16 +86,37 @@ public class BookDAO {
 		} catch (SQLException e) {	}		
 	}
 	public List<Book> getBooksByCriteria(String criteria, int id){
+		List<Book> listBooks = new LinkedList();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(
 					"Select * from book where ?=?");
 			pstmt.setString(1, criteria);
 			pstmt.setInt(2, id);
-		} catch (SQLException e) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Book book = new Book();
+				Author author = new Author();
+				Genre genre = new Genre();
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
+				author.setId(rs.getInt("author_id"));
+				book.setAuthor(author);
+				book.setPicture(rs.getBytes("picture"));
+				book.setPages(rs.getInt("pages"));
+				book.setPublisher(rs.getString("publisher"));
+				book.setYear(rs.getInt("year"));
+				book.setIsbn(rs.getString("isbn"));
+				book.setDescription(rs.getString("description"));
+				genre.setId(rs.getInt("genre_id"));
+				book.setGenre(genre);
+				book.setFile(rs.getBytes("filepdf"));
+				listBooks.add(book);
+			}
+		}catch(SQLException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return listBooks;
 	}
 	public List<Book> getBooksByTitle(String title){
 		List<Book> listBooks = new LinkedList();
@@ -101,10 +124,30 @@ public class BookDAO {
 			PreparedStatement pstmt = conn.prepareStatement(
 					"Select * from book where title=?");
 			pstmt.setString(1, title);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Book book = new Book();
+				Author author = new Author();
+				Genre genre = new Genre();
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
+				author.setId(rs.getInt("author_id"));
+				book.setAuthor(author);
+				book.setPicture(rs.getBytes("picture"));
+				book.setPages(rs.getInt("pages"));
+				book.setPublisher(rs.getString("publisher"));
+				book.setYear(rs.getInt("year"));
+				book.setIsbn(rs.getString("isbn"));
+				book.setDescription(rs.getString("description"));
+				genre.setId(rs.getInt("genre_id"));
+				book.setGenre(genre);
+				book.setFile(rs.getBytes("filepdf"));
+				listBooks.add(book);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return listBooks;
 	}
 }
