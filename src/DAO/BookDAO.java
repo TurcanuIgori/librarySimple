@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import Model.Book;
 import Model.User;
@@ -73,5 +75,36 @@ public class BookDAO {
 		} catch (SQLException e) {	}		
 		return newBook;
 	}
-
+	public void deleteBook(Book book){
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(
+					"delete * from book where id=?");			
+			pstmt.setInt(1, book.getId());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {	}		
+	}
+	public List<Book> getBooksByCriteria(String criteria, int id){
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(
+					"Select * from book where ?=?");
+			pstmt.setString(1, criteria);
+			pstmt.setInt(2, id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public List<Book> getBooksByTitle(String title){
+		List<Book> listBooks = new LinkedList();
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(
+					"Select * from book where title=?");
+			pstmt.setString(1, title);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
