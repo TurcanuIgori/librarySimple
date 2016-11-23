@@ -9,6 +9,7 @@
 		<title>Online Library</title>
 		<link type="image/png" rel="shortcut icon" href="Resources/images/favicon.gif"/>
 		<link rel="stylesheet" type="text/css" href="Resources/styles/style.css">
+		<script src="Resources/js/changeBooksByGenre.js" type="text/javascript"></script>
 	</head>
 	<body>		
 		<div class="header">
@@ -62,8 +63,7 @@
 						<ul>
 							<c:forEach items="${listGenre}" var="genre">	
 								<li>
-									<a href="#" value="${genre.id}" class="genre">${genre.name}</a>										
-									
+									<a href="#" value="${genre.id}" onclick="getBooksByGenre(${genre.id})" class="genre">${genre.name}</a>										
 								</li>
 							</c:forEach>						
 						</ul>

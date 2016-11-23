@@ -57,8 +57,6 @@ public class UserController extends HttpServlet {
 		if (request.getParameter("action") != null)
 			action = Actions.valueOf(request.getParameter("action"));
 		switch(action){
-		case ADD_EDIT_BOOK:
-			break;
 			case ADD_EDIT_USER:
 				User newUser = (User) request.getAttribute("newUser");
 				if(newUser.getId() != 0){

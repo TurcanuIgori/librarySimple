@@ -56,6 +56,9 @@ public class BookControllerFilter implements Filter {
 		Actions action = Actions.ADD_EDIT_BOOK;
 		if (request.getParameter("action") != null)
 			action = Actions.valueOf(req.getParameter("action"));
+		if(session.getAttribute("user") == null){
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+		}
 		switch (action) {
 			case ADD_EDIT_BOOK:
 				addEditBook(request, response);

@@ -2,12 +2,15 @@ package Controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.google.gson.Gson;
 
 import Model.Actions;
 import Model.Book;
@@ -68,6 +71,16 @@ public class BookController extends HttpServlet {
 					response.getOutputStream().close();
 				} catch (Exception e) {
 				}
+			case GET_BOOKS:
+				int genre_id = Integer.parseInt(request.getParameter("id"));
+				String json;
+				System.out.println("Send request to database...");
+				List<Book> listBooks =bookService.getBooksByCriteria("genre_id", genre_id);
+				json = new Gson().toJson(listBooks);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+  				break;
 			}
 	}
 
@@ -93,7 +106,7 @@ public class BookController extends HttpServlet {
 //  				request.setAttribute("books", bookService.getBooksByCriteria("genre_id", 1));
   				session.setAttribute("books", bookService.getBooksByCriteria("genre_id", 1));
   				request.getRequestDispatcher("/home.jsp").forward(request, response);
-  				break;
+  				break;  			
   		}
 	}
 
