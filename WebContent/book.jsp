@@ -24,7 +24,7 @@
 				<input type="hidden" form="bookForm" id="idBook" name="idBook" value="${book.id}">
 				<div id="profilePicture">
 				    <c:if test="${book.id != null}">
-				        <img src="PictureBook?id=${book.id}" id="image" width="150px"> 					        
+				        <img src="BookPicture?id=${book.id}" id="image" width="150px"> 					        
 				    </c:if>    
 				    <c:if test="${book.id == null}">
 				        <img src="Resources/images/noImgBook.png" id="image" height="150px">					        
@@ -51,7 +51,9 @@
 				<label>Genre</label>
 				<select name="genre" id="genre">
 					<c:forEach items="${listGenre}" var="genre">
-						<option value="${genre.id}">${genre.name}</option>
+						<c:if test="${genre.id == book.genre.id}"><option value="${genre.id}" selected>${genre.name}</option></c:if>
+						<c:if test="${genre.id != book.genre.id}"><option value="${genre.id}">${genre.name}</option></c:if>
+<%-- 						<option value="${genre.id}">${genre.name}</option> --%>
 					</c:forEach>
 				</select>
 				<label>Year</label>
@@ -62,6 +64,7 @@
 				<label id="isbnError" class="error"></label>
 				<label>Description</label>
 				<textarea id="description" name="description" rows="7" cols="30">
+					${book.description}
 				</textarea>
 			</fieldset>
 			<footer>	

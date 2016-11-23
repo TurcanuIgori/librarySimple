@@ -70,8 +70,7 @@ public class BookControllerFilter implements Filter {
 			if (isMultipart) {
 				System.out.println("Is multipart!");
 				Book newBook = new Book();
-				Author newAuthor = new Author();
-				newAuthor.setId(1);
+				Author newAuthor = new Author();				
 				Genre genre = new Genre();
 				DiskFileItemFactory factory = new DiskFileItemFactory();
 				ServletFileUpload upload = new ServletFileUpload(factory);			
@@ -137,7 +136,7 @@ public class BookControllerFilter implements Filter {
 			 				if (item.getSize() > 0) {
 				 				newBook.setPicture(data);
 				 			} else if (newBook.getId() != 0) {
-				 				List<Book> listBooks = (List<Book>) req.getSession().getAttribute("listBooks");
+				 				List<Book> listBooks = (List<Book>) req.getSession().getAttribute("books");
 				 				for (Book book : listBooks) {
 				 					if (book.getId() == newBook.getId()) {
 				 						newBook.setPicture(book.getPicture());
@@ -149,7 +148,17 @@ public class BookControllerFilter implements Filter {
 				 			newBook.setPicture(IOUtils.toByteArray(is));
 				 			}
 			 			}else if(item.getFieldName().equals("filePdf")){
-			 				newBook.setFile(data);
+			 				if(item.getSize() > 0){
+			 					newBook.setFile(data);
+			 				}else if(newBook.getId() != 0){
+			 					List<Book> listBooks = (List<Book>) req.getSession().getAttribute("books");
+				 				for (Book book : listBooks) {
+				 					if (book.getId() == newBook.getId()) {
+				 						newBook.setFile(book.getFile());
+				 					}
+				 				}
+			 				}
+			 				
 			 			}
 			 			
 			 		}

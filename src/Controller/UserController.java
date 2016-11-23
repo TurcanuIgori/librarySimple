@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import Model.Actions;
 import Model.User;
+import Service.BookService;
 import Service.UserService;
 
 /**
@@ -22,6 +23,7 @@ import Service.UserService;
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserService userService = new UserService();
+	BookService bookService = new BookService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,7 +45,6 @@ public class UserController extends HttpServlet {
 				break;
 			case LOGOUT:
 				session.invalidate();
-				System.out.println("to login.jsp");
 				request.getRequestDispatcher("/login.jsp").forward(request, response);
 				break;
 
@@ -53,12 +54,10 @@ public class UserController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Actions action = Actions.ADD_EDIT_USER;
-		System.out.println(request.getParameter("action"));
 		if (request.getParameter("action") != null)
 			action = Actions.valueOf(request.getParameter("action"));
 		switch(action){
 		case ADD_EDIT_BOOK:
-			System.out.println("TRRRRRRRRRRRRRRRRRRRRRRRRRRR" + request.getAttribute("name"));
 			break;
 			case ADD_EDIT_USER:
 				User newUser = (User) request.getAttribute("newUser");
@@ -101,6 +100,7 @@ public class UserController extends HttpServlet {
 						session.setAttribute("user", user);
 						try {
 							session.setAttribute("listGenre", userService.getAllGenre());
+							session.setAttribute("books", bookService.getBooksByCriteria("genre_id", 1));
 							request.getRequestDispatcher("/home.jsp").forward(request, response);
 						} catch (ServletException | IOException | SQLException e) {
 							// TODO Auto-generated catch block

@@ -43,6 +43,8 @@ public class BookController extends HttpServlet {
 			switch(action){
 			case ADD_EDIT_BOOK:
 				try {
+					int book_id = Integer.parseInt(request.getParameter("id"));
+					request.setAttribute("book", bookService.getBookById(book_id));
 					session.setAttribute("listGenre", userService.getAllGenre());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -50,9 +52,23 @@ public class BookController extends HttpServlet {
 				}
 				request.getRequestDispatcher("/book.jsp").forward(request, response);
 				break;
+			case DELETE_BOOK:
+  				int id = Integer.parseInt(request.getParameter("id"));
+  				bookService.deleteBookById(id);
+  				session.setAttribute("books", bookService.getBooksByCriteria("genre_id", 1));
+  				request.getRequestDispatcher("/home.jsp").forward(request, response);
+  				break;
+			case READ_BOOK:
+				id = Integer.parseInt(request.getParameter("id"));
+  				Book book = bookService.getBookById(id);
+  				try {
+					response.setContentType("application/pdf");
+					response.getOutputStream().write(book.getFile());
+					response.getOutputStream().flush();
+					response.getOutputStream().close();
+				} catch (Exception e) {
+				}
 			}
-			System.out.println("Book Controller! GET");
-			response.getWriter().append("Served att: ").append(request.getContextPath());
 	}
 
 	/**
@@ -69,7 +85,13 @@ public class BookController extends HttpServlet {
   			case ADD_EDIT_BOOK:
   				Book newBook = (Book) request.getAttribute("newBook");
   				System.out.println(newBook.getName() + newBook.getAuthor().getFirstName() + newBook.getPicture());
-  				bookService.addBook(newBook);
+  				if(newBook.getId() == 0){
+  					bookService.addBook(newBook);
+  				}else if(newBook.getId() != 0){
+  					bookService.updateBook(newBook);
+  				}  				
+//  				request.setAttribute("books", bookService.getBooksByCriteria("genre_id", 1));
+  				session.setAttribute("books", bookService.getBooksByCriteria("genre_id", 1));
   				request.getRequestDispatcher("/home.jsp").forward(request, response);
   				break;
   		}

@@ -76,21 +76,26 @@ public class BookDAO {
 		} catch (SQLException e) {	}		
 		return newBook;
 	}
-	public void deleteBook(Book book){
+	public void deleteBookById(int id){
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(
-					"delete * from book where id=?");			
-			pstmt.setInt(1, book.getId());
+					"delete from book where id=?");			
+			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {	}		
 	}
 	public List<Book> getBooksByCriteria(String criteria, int id){
 		List<Book> listBooks = new LinkedList();
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(
-					"Select * from book where ?=?");
-			pstmt.setString(1, criteria);
-			pstmt.setInt(2, id);
+			PreparedStatement pstmt =null;
+			if(criteria.equals("genre_id")){
+				pstmt = conn.prepareStatement(
+						"Select * from book where genre_id=?");
+			}else if(criteria.equals("atuhor_id")){
+				pstmt = conn.prepareStatement(
+						"Select * from book where author_id=?");
+			}			
+			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Book book = new Book();
@@ -148,5 +153,35 @@ public class BookDAO {
 			e.printStackTrace();
 		}
 		return listBooks;
+	}
+	public Book getBookById(int id){
+		Book book = new Book();
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(
+					"Select * from book where id=?");
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()){
+				Author author = new Author();
+				Genre genre = new Genre();
+				book.setId(rs.getInt("id"));
+				book.setName(rs.getString("name"));
+				author.setId(rs.getInt("author_id"));
+				book.setAuthor(author);
+				book.setPicture(rs.getBytes("picture"));
+				book.setPages(rs.getInt("pages"));
+				book.setPublisher(rs.getString("publisher"));
+				book.setYear(rs.getInt("year"));
+				book.setIsbn(rs.getString("isbn"));
+				book.setDescription(rs.getString("description"));
+				genre.setId(rs.getInt("genre_id"));
+				book.setGenre(genre);
+				book.setFile(rs.getBytes("filepdf"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return book;
 	}
 }

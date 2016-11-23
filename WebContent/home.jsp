@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -39,7 +40,7 @@
 				<ul>
 					<li><a href="home.jsp">home</a></li>                            
 					<li><a href="about.jsp">about</a></li>
-					<li><a href="contact.jsp">contact</a></li>                            
+					<li><a href="SendEmail" target="_blank">contact</a></li>                            
 				</ul>
 			</div> 
 			<div class="search">
@@ -70,7 +71,7 @@
 				</div>
 				<div class="right-content">
 					<div class="box-sh">
-						<h1><p id="booksCount">Books size:  10</p></h1>
+						<h1><p id="booksCount">Books size: ${fn:length(books)}</p></h1>
 						<form id="add-action">
 							<a href="BookController?action=ADD_EDIT_BOOK&id=${book.id}">Add Book</a>							
 						</form>
@@ -78,197 +79,54 @@
 					</div>					
 					<form id="booksForm">
 						<div id="booksList" class="books_list">
-							<div class="item">
-								<div class="image-info">
-
-									<a class="content_link" target="_blank">
-										<img src="Resources/images/book1.jpg" width="110" height="150"/>										
-									</a>
-
-
-									<div id="ratingPanel">
-										
-									</div>
-								</div>
-
-
-								<div class="info">
-									<div class="book_name">
-										<a href="#" id="bookName" class="title" target="_blank">
-											Amintiri din Copilarie											
+							<c:forEach var="book" items="${books}">
+								<div class="item">
+									<div class="image-info">
+	
+										<a class="content_link" target="_blank">
+											<img src="BookPicture?id=${book.id}" width="110" height="150"/>										
 										</a>
-
+	
+	
+										<div id="ratingPanel">
+											
+										</div>
 									</div>
-									<span>Ion Creanga</span>
-
-									<p><strong>Pages:</strong> 55</p>
-
-									<p><strong>Publisher:</strong> Liter</p>
-
-									<p><strong>Year:</strong> 2016</p>
-
-									<p><strong>ISBN:</strong> 248979874asd154sa</p>
-
-								</div>
-
-
-								<a class="mr" href="#"target="_blank">
-									<p class="read">Read</p>
-								</a>
-								<a href="#" class="mr" value="Download" target="_blank">
-									<p class="download">Download</p>
-								</a>
-								<a href="#" class="mr" title="Edit Book">
-									<p class="edit">Edit</p>
-								</a>
-								<a href="#" class="delete-button" title="Delete">
-									<p class="delete">Delete</p>
-								</a>
-							</div>
-							<div class="item">
-								<div class="image-info">
-
-									<a class="content_link" target="_blank">
-										<img src="Resources/images/book1.jpg" width="110" height="150"/>										
+	
+	
+									<div class="info">
+										<div class="book_name">
+											<a href="#" id="bookName" class="title" target="_blank">
+												${book.name}											
+											</a>
+	
+										</div>
+										<span>${book.author.firstName} ${book.author.lastName}</span>	
+										<p><strong>Pages:</strong> ${book.pages}</p>
+	
+										<p><strong>Publisher:</strong> ${book.publisher}</p>
+	
+										<p><strong>Year:</strong> ${book.year}</p>
+	
+										<p><strong>ISBN:</strong> ${book.isbn}</p>
+	
+									</div>
+	
+	
+									<a class="mr" href="BookController?action=READ_BOOK&id=${book.id}" target="_blank">
+										<p class="read">Read</p>
 									</a>
-
-
-									<div id="ratingPanel">
-										<!--<p:rating id="rating" value="#{b.rating}" styleClass="rating" cancel="false" stars="5"/>
-										<p:outputLabel id="voteCount" value="(#{b.voteCount})" styleClass="vote-count"/>-->
-									</div>
-								</div>
-
-
-								<div class="info">
-									<div class="book_name">
-										<a href="#" id="bookName" class="title" target="_blank">
-											Amintiri din Copilarie											
-										</a>
-
-									</div>
-									<span>Ion Creanga</span>
-
-									<p><strong>Pages:</strong> 55</p>
-
-									<p><strong>Publisher:</strong> Liter</p>
-
-									<p><strong>Year:</strong> 2016</p>
-
-									<p><strong>ISBN:</strong> 248979874asd154sa</p>
-
-								</div>
-
-
-								<a class="mr" href="#"target="_blank">
-									<p class="read">Read</p>
-								</a>
-								<a href="#" class="mr" value="Download" target="_blank">
-									<p class="download">Download</p>
-								</a>
-								<a href="#" class="mr" title="Edit Book">
-									<p class="edit">Edit</p>
-								</a>
-								<a href="#" class="delete-button" title="Delete">
-									<p class="delete">Delete</p>
-								</a>
-							</div>
-							<div class="item">
-								<div class="image-info">
-
-									<a class="content_link" target="_blank">
-										<img src="Resources/images/book1.jpg" width="110" height="150"/>										
+									<a href="DownloadPDF?id=${book.id}" class="mr" value="Download" target="_blank">
+										<p class="download">Download</p>
 									</a>
-
-
-									<div id="ratingPanel">
-										<!--<p:rating id="rating" value="#{b.rating}" styleClass="rating" cancel="false" stars="5"/>
-										<p:outputLabel id="voteCount" value="(#{b.voteCount})" styleClass="vote-count"/>-->
-									</div>
-								</div>
-
-
-								<div class="info">
-									<div class="book_name">
-										<a href="#" id="bookName" class="title" target="_blank">
-											Amintiri din Copilarie											
-										</a>
-
-									</div>
-									<span>Ion Creanga</span>
-
-									<p><strong>Pages:</strong> 55</p>
-
-									<p><strong>Publisher:</strong> Liter</p>
-
-									<p><strong>Year:</strong> 2016</p>
-
-									<p><strong>ISBN:</strong> 248979874asd154sa</p>
-
-								</div>
-
-
-								<a class="mr" href="#"target="_blank">
-									<p class="read">Read</p>
-								</a>
-								<a href="#" class="mr" value="Download" target="_blank">
-									<p class="download">Download</p>
-								</a>
-								<a href="#" class="mr" title="Edit Book">
-									<p class="edit">Edit</p>
-								</a>
-								<a href="#" class="delete-button" title="Delete">
-									<p class="delete">Delete</p>
-								</a>
-							</div>
-							<div class="item">
-								<div class="image-info">
-
-									<a class="content_link" target="_blank">
-										<img src="Resources/images/book1.jpg" width="110" height="150"/>										
+									<a href="BookController?action=ADD_EDIT_BOOK&id=${book.id}" class="mr" title="Edit Book">
+										<p class="edit">Edit</p>
 									</a>
-
-
-									<div id="ratingPanel">
-										<!--<p:rating id="rating" value="#{b.rating}" styleClass="rating" cancel="false" stars="5"/>
-										<p:outputLabel id="voteCount" value="(#{b.voteCount})" styleClass="vote-count"/>-->
-									</div>
+									<a href="BookController?action=DELETE_BOOK&id=${book.id}" class="delete-button" title="Delete">
+										<p class="delete">Delete</p>
+									</a>
 								</div>
-
-
-								<div class="info">
-									<div class="book_name">
-										<a href="#" id="bookName" class="title" target="_blank">
-											Amintiri din Copilarie											
-										</a>
-
-									</div>
-									<span>Ion Creanga</span>
-
-									<p><strong>Pages:</strong> 55</p>
-
-									<p><strong>Publisher:</strong> Liter</p>
-
-									<p><strong>Year:</strong> 2016</p>
-
-									<p><strong>ISBN:</strong> 248979874asd154sa</p>
-
-								</div>
-
-
-								<a class="mr" href="#"target="_blank">
-									<p class="read">Read</p>
-								</a>
-								<a href="#" class="mr" value="Download" target="_blank">
-									<p class="download">Download</p>
-								</a>
-								<a href="#" class="mr" title="Edit Book">
-									<p class="edit">Edit</p>
-								</a>
-								<a href="#" class="delete-button" title="Delete">
-									<p class="delete">Delete</p>
-								</a>
-							</div>
+							</c:forEach>							
 						</div>						
 					</form>
 				</div>

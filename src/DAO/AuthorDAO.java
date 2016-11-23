@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import Model.Author;
 import Model.Book;
+import Model.User;
 
 public class AuthorDAO {
 	private Connection conn;
@@ -25,23 +26,21 @@ public class AuthorDAO {
 		ResultSet rs = null;
 			try {
 				PreparedStatement pstmt = conn.prepareStatement(
-						"Select * from author where firstname like ? and lastname like ?");			
+						"Select id from author where firstname like ? and lastname like ? limit 1");			
 				pstmt.setString(1, author.getFirstName());
 				pstmt.setString(2, author.getLastName());
 				rs = pstmt.executeQuery();
-				if(rs != null){
-					int i = rs.getInt("id");
-					return i;
-				}else{
-					return 0;
-				}
-				
+								
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally{
 				if(rs != null){
-					int i = rs.getInt("id");
+					int i=0;
+					while(rs.next()){
+						i = rs.getInt("id");
+						System.out.println("Author id: " + i);
+					}				
 					return i;
 				}else{
 					return 0;
@@ -58,5 +57,22 @@ public class AuthorDAO {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {	}		
 		return newAuthor;
+	}
+	public Author getAuthorById(Author author){		
+		try {
+
+			PreparedStatement pstmt = conn.prepareStatement(
+					"Select * from author where id = ?;");
+			pstmt.setInt(1, author.getId());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				author.setId(rs.getInt("id"));
+				author.setFirstName(rs.getString("firstname"));
+				author.setLastName(rs.getString("lastname"));
+			}
+		} catch (SQLException e) {
+
+		}
+		return author;		
 	}
 }

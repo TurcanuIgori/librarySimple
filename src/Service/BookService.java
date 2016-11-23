@@ -2,6 +2,7 @@ package Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import DAO.AuthorDAO;
 import DAO.BookDAO;
@@ -42,6 +43,48 @@ public class BookService {
 		return bookDAO.addBook(newBook);
 	}	
 	public Book updateBook(Book book){
+		try {
+			int author_id =	authorDAO.checkAuthor(book.getAuthor());
+			if(author_id != 0){
+				Author author = book.getAuthor();
+				author.setId(author_id);
+				book.setAuthor(author);
+			}else{
+				authorDAO.addAuthor(book.getAuthor());
+				author_id =	authorDAO.checkAuthor(book.getAuthor());
+				Author author = book.getAuthor();
+				author.setId(author_id);
+				book.setAuthor(author);
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		return bookDAO.updateBook(book);
+	}
+	public List<Book> getBooksByCriteria(String criteria, int id){
+		List<Book> listBooks = bookDAO.getBooksByCriteria(criteria, id);
+		for(Book book : listBooks){
+			book.setAuthor(authorDAO.getAuthorById(book.getAuthor()));
+		}
+		return listBooks;
+	}
+	public void deleteBookById(int id){
+		bookDAO.deleteBookById(id);
+	}
+	public List<Book> getBooksByTitle(String title){
+		List<Book> listBooks =  bookDAO.getBooksByTitle(title);
+		for(Book book : listBooks){
+			book.setAuthor(authorDAO.getAuthorById(book.getAuthor()));
+		}
+		return listBooks;
+	}
+	public Book getBookById(int id){
+		Book book =  bookDAO.getBookById(id);
+		System.out.println(book.getId());
+		Author author = book.getAuthor();
+		author = authorDAO.getAuthorById(author);
+		book.setAuthor(author);
+		return book;
 	}
 }
