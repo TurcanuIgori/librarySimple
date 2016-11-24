@@ -29,13 +29,8 @@ function getBooksByGenre(id){
 function listBooks(){	
 	if(request.readyState == 4){			
 		if(request.status == 200){
-			alert("URAAAAAAAAAAAAAA");
-//			var jsonData=eval('(' + request.responseText + ')');	
-//			var s = null;
-//			for(var i = 0; i < json.length; i++){
-//				s=s+jsonData[i].name;
-//			}
-//			alert(s);
+			alert(request.responseText);
+			var jsonData=eval('(' + request.responseText + ')');	
 		}
 	}	
 }

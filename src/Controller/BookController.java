@@ -76,6 +76,11 @@ public class BookController extends HttpServlet {
 				String json;
 				System.out.println("Send request to database...");
 				List<Book> listBooks =bookService.getBooksByCriteria("genre_id", genre_id);
+				session.setAttribute("books", listBooks);
+				for(Book newBook : listBooks){
+					newBook.setPicture(null);
+					newBook.setFile(null);
+				}
 				json = new Gson().toJson(listBooks);
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
