@@ -2,6 +2,7 @@ package Controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -72,16 +73,27 @@ public class BookController extends HttpServlet {
 				} catch (Exception e) {
 				}
 			case GET_BOOKS:
+				int numberOfBooks = 4;
 				int genre_id = Integer.parseInt(request.getParameter("id"));
+				int pag = Integer.parseInt(request.getParameter("p"));
 				String json;
 				System.out.println("Send request to database...");
 				List<Book> listBooks =bookService.getBooksByCriteria("genre_id", genre_id);
-				session.setAttribute("books", listBooks);
 				for(Book newBook : listBooks){
 					newBook.setPicture(null);
 					newBook.setFile(null);
 				}
-				json = new Gson().toJson(listBooks);
+				List<Book> lBooks = new ArrayList();
+				for(int i = numberOfBooks*pag-4; i < numberOfBooks*pag; i++){
+					lBooks.add(listBooks.get(i));
+				}
+				List<Integer> pages = new ArrayList();
+				for(int n=1; n<=listBooks.size()/4+1; n++){
+					pages.add(n);
+				}
+				session.setAttribute("books", listBooks);
+				session.setAttribute("pages", pages);
+				json = new Gson().toJson(lBooks);
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);

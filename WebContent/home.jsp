@@ -63,7 +63,7 @@
 						<ul>
 							<c:forEach items="${listGenre}" var="genre">	
 								<li>
-									<a href="#" value="${genre.id}" onclick="getBooksByGenre(${genre.id})" class="genre">${genre.name}</a>										
+									<a href="#" value="${genre.id}" onclick="getBooksByGenre(${genre.id}, 1)" class="genre">${genre.name}</a>										
 								</li>
 							</c:forEach>						
 						</ul>
