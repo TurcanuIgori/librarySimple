@@ -63,12 +63,7 @@ public class UserController extends HttpServlet {
 					userService.updateUser(newUser);
 					session.setAttribute("textStatus", "User succes updated!");
 					session.setAttribute("user", newUser);
-					try {
-						session.setAttribute("listGenre", userService.getAllGenre());
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					session.setAttribute("listGenre", userService.getAllGenre());
 					request.getRequestDispatcher("/home.jsp").forward(request, response);
 				}else{
 //					if(userService.checkUser(newUser)){
@@ -100,7 +95,7 @@ public class UserController extends HttpServlet {
 							session.setAttribute("listGenre", userService.getAllGenre());
 							session.setAttribute("books", bookService.getBooksByCriteria("genre_id", 1));
 							request.getRequestDispatcher("/home.jsp").forward(request, response);
-						} catch (ServletException | IOException | SQLException e) {
+						} catch (ServletException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}

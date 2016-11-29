@@ -30,11 +30,11 @@ public class UserService {
 
 	public User addUser(User newUser) throws SQLException {
 		// method to add a new user
-//		if(checkUser(newUser)){
+		if(checkUser(newUser)){
 			return userDAO.addUser(newUser);
-//		}else{
-//			throw new SQLException("Accunt with this email already exists in database");
-//		}
+		}else{
+			throw new SQLException("Accunt with this email already exists in database");
+		}
 	}
 	public User findUserById(int id){
 		return userDAO.findUserById(id);
@@ -42,7 +42,7 @@ public class UserService {
 	public User findUserByEmail(String email){
 		return userDAO.findUserByEmail(email);
 	}
-	public List<Genre> getAllGenre() throws SQLException{
+	public List<Genre> getAllGenre(){
 		return userDAO.getAllGenre();
 	}
 }

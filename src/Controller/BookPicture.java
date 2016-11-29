@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import Model.Book;
 import Model.User;
+import Service.BookService;
 
 /**
  * Servlet implementation class BookPicture
@@ -30,22 +31,19 @@ public class BookPicture extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		BookService bookService = new BookService();
 		HttpSession session = request.getSession();
 		int id = Integer.parseInt(request.getParameter("id"));
-		List<Book> books = (List<Book>) request.getSession().getAttribute("books");
-		for(Book book : books){
-			if(book.getId() == id){
-				try {
-					response.setContentType("image/jpg");
-					response.getOutputStream().write(book.getPicture());
-					response.getOutputStream().flush();
-					response.getOutputStream().close();
-				} catch (Exception e) {
-				}
-			}
+		System.out.println(id);
+		try {
+			response.setContentType("image/jpg");
+			response.getOutputStream().write(bookService.getBookById(id).getPicture());
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		} catch (Exception e) {
 		}
-				
 	}
+		
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

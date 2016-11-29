@@ -90,10 +90,10 @@ public class BookDAO {
 			PreparedStatement pstmt =null;
 			if(criteria.equals("genre_id")){
 				pstmt = conn.prepareStatement(
-						"Select * from book where genre_id=?");
+						"Select * from book where genre_id=?  order by id");
 			}else if(criteria.equals("atuhor_id")){
 				pstmt = conn.prepareStatement(
-						"Select * from book where author_id=?");
+						"Select * from book where author_id=? order by id ");
 			}			
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
@@ -126,7 +126,7 @@ public class BookDAO {
 		List<Book> listBooks = new LinkedList();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(
-					"Select * from book where title=?");
+					"Select * from book where title=? order by id");
 			pstmt.setString(1, title);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {

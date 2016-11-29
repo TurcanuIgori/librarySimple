@@ -22,24 +22,22 @@ public class BookService {
 		authorDAO = new AuthorDAO(conn);
 	}
 
-	public Book addBook(Book newBook){
-		try {
-		int author_id =	authorDAO.checkAuthor(newBook.getAuthor());
-		if(author_id != 0){
-			Author author = newBook.getAuthor();
-			author.setId(author_id);
-			newBook.setAuthor(author);
-		}else{
-			authorDAO.addAuthor(newBook.getAuthor());
-			author_id =	authorDAO.checkAuthor(newBook.getAuthor());
-			Author author = newBook.getAuthor();
-			author.setId(author_id);
-			newBook.setAuthor(author);
-		}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Book addBook(Book newBook) throws SQLException{
+			if(bookDAO.checkBook(newBook)){
+				throw new SQLException("Book with this isbn already exists in database");
+			}
+			int author_id =	authorDAO.checkAuthor(newBook.getAuthor());
+			if(author_id != 0){
+				Author author = newBook.getAuthor();
+				author.setId(author_id);
+				newBook.setAuthor(author);
+			}else{
+				authorDAO.addAuthor(newBook.getAuthor());
+				author_id =	authorDAO.checkAuthor(newBook.getAuthor());
+				Author author = newBook.getAuthor();
+				author.setId(author_id);
+				newBook.setAuthor(author);
+			}
 		return bookDAO.addBook(newBook);
 	}	
 	public Book updateBook(Book book){

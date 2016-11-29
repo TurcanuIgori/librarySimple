@@ -22,6 +22,7 @@
 				</a>
 				<input type="hidden" form="bookForm" id="action" name="action" value="ADD_EDIT_BOOK"> 
 				<input type="hidden" form="bookForm" id="idBook" name="idBook" value="${book.id}">
+				<input type="hidden" form="bookForm" id="genre_id" name="genre_id" value="${book.genre.id}">
 				<div id="profilePicture">
 				    <c:if test="${book.id != null}">
 				        <img src="BookPicture?id=${book.id}" id="image" width="150px"> 					        

@@ -19,22 +19,25 @@ function getBooksByGenre(id, pag){
 	if(request==null){
 		alert("Error creating request!");
 	}		
-	alert("send request to server...");
 	var url = "BookController?action=GET_BOOKS&id=" + id + "&p=" + pag;
 	request.open("GET", url, true);	
-	alert("Response succesfuly toke...");
 	request.onreadystatechange = listBooks;
 	request.send(null);
 }
 function listBooks(){	
-	if(request.readyState == 4){			
+	if(request.readyState == 4){
+		if(request.status == 500){
+			var el = document.getElementById('booksList');
+			while ( el.firstChild ){ el.removeChild( el.firstChild )};
+			var noBooks = document.createElement('a');
+			noBooks = document.createTextNode("Not added books at this genre");
+			document.getElementById('booksList').appendChild(noBooks);
+		}
 		if(request.status == 200){
 			var jsonData=eval('(' + request.responseText + ')');
 			var el = document.getElementById('booksList');
 			while ( el.firstChild ){ el.removeChild( el.firstChild )};
-			alert("Incepe For!");
 			for(var i = 0; i < jsonData.length; i++){
-				alert(jsonData[i].id + jsonData.length);
 				var itemDiv = document.createElement("div");  
 //				itemDiv.setAttribute("class", "item");
 				itemDiv.className = "item";
@@ -46,6 +49,7 @@ function listBooks(){
 				imageInfoDivA.setAttribute("target", "_blank");
 				var imageInfoDivAImg = document.createElement("IMG");
 				imageInfoDivAImg.setAttribute("src", "BookPicture?id=" + jsonData[i].id);
+				alert("genre: " + jsonData[i].genre.id);
 //				imageInfoDivAImg.src("BookPicture?id=" + jsonData[i].id);
 				imageInfoDivAImg.setAttribute("width", "110");
 				imageInfoDivAImg.setAttribute("height", "150");
@@ -140,7 +144,35 @@ function listBooks(){
 				aDelete.appendChild(aDeleteP);
 				itemDiv.appendChild(aDelete);
 				document.getElementById('booksList').appendChild(itemDiv);
-			}	
+			}
+			try{
+				getNumberOfPages(jsonData[0].genre.id);
+			}catch(e){
+				var el = document.getElementById('booksList');
+				while ( el.firstChild ){ el.removeChild( el.firstChild )};
+				var noBooks = document.createElement('a');
+				noBooks = document.createTextNode("Not added books at this genre");
+				document.getElementById('booksList').appendChild(noBooks);
+			}
 		}
 	}	
+	
+}
+function getNumberOfPages(id){	
+	createRequest();
+	if(request==null){
+		alert("Error creating request!");
+	}		
+	var url = "BookController?action=GET_PAGES&id=" + id;
+	request.open("GET", url, true);	
+	request.onreadystatechange = listPages;
+	request.send(null);
+}
+function listPages(){	
+	if(request.readyState == 4){
+		if(request.status == 200){
+			var jsonData=eval('(' + request.responseText + ')');
+			alert(jsonData);
+		}
+	}
 }

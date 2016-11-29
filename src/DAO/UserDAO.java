@@ -46,7 +46,6 @@ public class UserDAO {
 	//method to create a new user and add in database
 	public User addUser(User newUser){
 		try {
-			System.out.println(newUser.getEmail() + "++++++++++++");
 			PreparedStatement pstmt = conn.prepareStatement(
 					"INSERT INTO users (firstname, lastname, email, picture, pass, phone, dob, gender, isadmin) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			pstmt.setString(1, newUser.getFirstName());
@@ -174,16 +173,23 @@ public class UserDAO {
 		}
 		return user;
 	}
-	public List<Genre> getAllGenre() throws SQLException{
+	public List<Genre> getAllGenre(){
 		List<Genre> listGenre = new ArrayList<Genre>();
-		PreparedStatement pstmt = conn.prepareStatement("select * from genre");
-		ResultSet rs = pstmt.executeQuery();
-		while (rs.next()) {
-			Genre genre = new Genre();
-			genre.setId(rs.getInt("id"));
-			genre.setName(rs.getString("name"));
-			listGenre.add(genre);
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement("select * from genre");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Genre genre = new Genre();
+				genre.setId(rs.getInt("id"));
+				genre.setName(rs.getString("name"));
+				listGenre.add(genre);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 		return listGenre;
 	}
 }

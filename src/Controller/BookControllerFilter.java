@@ -75,6 +75,7 @@ public class BookControllerFilter implements Filter {
 				Book newBook = new Book();
 				Author newAuthor = new Author();				
 				Genre genre = new Genre();
+				String genre_id = null;
 				DiskFileItemFactory factory = new DiskFileItemFactory();
 				ServletFileUpload upload = new ServletFileUpload(factory);			
 				List<FileItem> items = null;
@@ -129,6 +130,15 @@ public class BookControllerFilter implements Filter {
 			 				case "description":
 			 					newBook.setDescription(item.getString());
 			 					break;
+			 				case "genre_id":
+			 					System.out.println("GENRE_ID" + item.getString());
+			 					if(item.getString() != null){
+			 						genre_id = item.getString();
+			 					}
+			 					else{
+			 						genre_id = "1";
+			 					}
+			 					break;
 			 				default:							
 			 					break;
 			 			}
@@ -169,6 +179,7 @@ public class BookControllerFilter implements Filter {
 			 	} catch (Exception e) {
 			 		e.printStackTrace();
 			 	}
+			 	request.setAttribute("genre_id", genre_id);
 			 	request.setAttribute("newBook", newBook);
 			}else{
 				System.out.println("Merge la Book Controller.");

@@ -71,7 +71,7 @@
 				</div>
 				<div class="right-content">
 					<div class="box-sh">
-						<h1><p id="booksCount">Books size: ${fn:length(books)}</p></h1>
+						<h1><p id="booksCount">Books size: ${fn:length(books)} Pages: ${pages}</p></h1>
 						<form id="add-action">
 							<a href="BookController?action=ADD_EDIT_BOOK&id=${book.id}">Add Book</a>							
 						</form>
@@ -79,6 +79,9 @@
 					</div>					
 					<form id="booksForm">
 						<div id="booksList" class="books_list">
+							<c:if test="${empty books}">
+								<a>Not added books at this genre</a>
+							</c:if>
 							<c:forEach var="book" items="${books}">
 								<div class="item">
 									<div class="image-info">
