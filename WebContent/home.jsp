@@ -71,7 +71,7 @@
 				</div>
 				<div class="right-content">
 					<div class="box-sh">
-						<h1><p id="booksCount">Books size: ${fn:length(books)} Pages: ${pages}</p></h1>
+						<h1><p id="booksCount">Books size: ${fn:length(books)}</p></h1>
 						<form id="add-action">
 							<a href="BookController?action=ADD_EDIT_BOOK&id=${book.id}">Add Book</a>							
 						</form>

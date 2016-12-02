@@ -34,6 +34,13 @@ public class SendEmail extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/contact.jsp").forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Recipient's email ID needs to be mentioned.
 	      String to = "tzurcanu93@mail.ru";
 	 
@@ -84,9 +91,9 @@ public class SendEmail extends HttpServlet {
 	         message.addRecipient(Message.RecipientType.TO,
 	                                  new InternetAddress(to));
 	         // Set Subject: header field
-	         message.setSubject("This is the Subject Line!");
+	         message.setSubject("Message from: " + request.getParameter("firstName") + " email: " + request.getParameter("email") + " phone: " + request.getParameter("phone"));
 	         // Now set the actual message
-	         message.setText("This is actual message");
+	         message.setText(request.getParameter("message"));
 	         // Send message
 	         Transport.send(message);
 	         String title = "Send Email";
@@ -104,14 +111,7 @@ public class SendEmail extends HttpServlet {
 	      }catch (MessagingException mex) {
 	         mex.printStackTrace();
 	      }
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	      request.getRequestDispatcher("/home.jsp").forward(request, response);
 	}
 
 }
