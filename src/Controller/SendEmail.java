@@ -56,7 +56,7 @@ public class SendEmail extends HttpServlet {
 	      // Setup mail server
 	      properties.setProperty("mail.smtp.host", "smtp.gmail.com");
 	      properties.setProperty("mail.smtp.username", "tzurcanu93@gmail.com");
-	      properties.setProperty("mail.smtp.password", "Hhappyprograming");
+	      properties.setProperty("mail.smtp.password", "password");
 	      properties.setProperty("mail.smtp.defaultEncoding", "UTF-8");
 	      properties.setProperty("mail.smtp.auth", "true");
 	      properties.setProperty("mail.smtp.starttls.required", "true");
@@ -74,7 +74,7 @@ public class SendEmail extends HttpServlet {
 	      Session session = Session.getDefaultInstance(properties,
 	    	        new javax.mail.Authenticator() {
 	    	            protected PasswordAuthentication getPasswordAuthentication() {
-	    	                return new PasswordAuthentication("tzurcanu93@gmail.com","Hhappyprograming");
+	    	                return new PasswordAuthentication("tzurcanu93@gmail.com",""password");
 	    	            }
 	    	        });
 	      
